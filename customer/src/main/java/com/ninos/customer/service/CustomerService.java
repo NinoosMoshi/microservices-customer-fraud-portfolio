@@ -2,6 +2,8 @@ package com.ninos.customer.service;
 
 import com.ninos.clients.fraud.FraudCheckResponse;
 import com.ninos.clients.fraud.FraudClient;
+import com.ninos.clients.notification.NotificationClient;
+import com.ninos.clients.notification.NotificationRequest;
 import com.ninos.customer.model.Customer;
 import com.ninos.customer.repository.CustomerRepo;
 import com.ninos.customer.response.CustomerRegistrationRequest;
@@ -16,6 +18,7 @@ public class CustomerService {
     private final CustomerRepo customerRepo;
     private final RestTemplate restTemplate;
     private final FraudClient fraudClient;
+    private final NotificationClient notificationClient;
 
 
     public void registerCustomer(CustomerRegistrationRequest request) {
@@ -42,7 +45,21 @@ public class CustomerService {
             throw new IllegalStateException("fraudster");
         }
 
-        // todo: send notification
+
+        // todo: make it async. i.e add to queue
+        notificationClient.sendNotification(
+                new NotificationRequest(
+                        customer.getId(),
+                        customer.getEmail(),
+                        String.format("Hi %s, welcome to Ankedoscode...",
+                                customer.getFirstName())
+                )
+        );
+
+
+
+
+
     }
 
 
