@@ -6,3 +6,4 @@ public record CustomerRegistrationRequest(
         String email
 ) {
 }
+
