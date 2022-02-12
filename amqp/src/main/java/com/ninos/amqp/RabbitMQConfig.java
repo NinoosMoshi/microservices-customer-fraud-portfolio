@@ -3,6 +3,7 @@ package com.ninos.amqp;
 
 import lombok.AllArgsConstructor;
 import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
@@ -16,6 +17,7 @@ public class RabbitMQConfig {
 
     private final ConnectionFactory connectionFactory;
 
+    // allow sending message to the Queue
     @Bean
     public AmqpTemplate amqpTemplate(){
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
@@ -23,7 +25,17 @@ public class RabbitMQConfig {
         return rabbitTemplate;
     }
 
+    // allow receiving message from the Queue
+    @Bean
+    public SimpleRabbitListenerContainerFactory simpleRabbitListenerContainerFactory(){
+        SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
+        factory.setConnectionFactory(connectionFactory);
+        factory.setMessageConverter(jacksonConverter());
+        return factory;
+    }
 
+
+    // sending and receiving message by jacksonConverter
     @Bean
     public MessageConverter jacksonConverter(){
       MessageConverter jackson2JsonMessageConverter = new Jackson2JsonMessageConverter();
