@@ -22,7 +22,7 @@ public class NotificationApplication {
 //    CommandLineRunner commandLineRunner(RabbitMQMessageProducer producer,
 //                                        NotificationConfig notificationConfig){
 //        return args -> {
-//          producer.publish(new Person("Matthew",9),
+//          producer.publish(new Person("ninos", 41),
 //                           notificationConfig.getInternalExchange(),
 //                           notificationConfig.getInternalNotificationRoutingKey());
 //        };
